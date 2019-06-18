@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import ReactJson from 'react-json-view';
+
+import axios from 'axios';
 
 import '../styles.scss';
 
@@ -8,14 +11,21 @@ export default class Postman extends Component {
 
     this.state = {
       apiUrl: '',
-      apiResult: 'JSON Data',
+      apiResult: null,
     };
   }
 
-  handleChange = () => {};
+  handleChange = e => {
+    const value = e.target.value;
+    this.setState({ apiUrl: value });
+  };
 
   handleSubmit = e => {
     e.preventDefault();
+    const { apiUrl } = this.state;
+    axios.get(apiUrl).then(response => {
+      this.setState({ apiResult: response.data });
+    });
   };
 
   render() {
@@ -24,7 +34,7 @@ export default class Postman extends Component {
       <div className="Postman">
         <h1>Postman</h1>
         <form>
-          <label htmlFor="apiurl">
+          <label className="input-label" htmlFor="apiurl">
             API URL:
             <input
               id="apiurl"
@@ -37,7 +47,7 @@ export default class Postman extends Component {
           <button type="button" onClick={this.handleSubmit}>
             Submit
           </button>
-          <div>{apiResult}</div>
+          <div className="json-data">{apiResult ? <ReactJson src={apiResult} /> : null}</div>
         </form>
       </div>
     );

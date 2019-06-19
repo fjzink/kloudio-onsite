@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import ReactJson from 'react-json-view';
-
 import axios from 'axios';
+
+import PrettyJson from './PrettyJson';
+import RequestForm from './RequestForm';
 
 import '../styles.scss';
 
@@ -33,22 +34,8 @@ export default class Postman extends Component {
     return (
       <div className="Postman">
         <h1>Postman</h1>
-        <form>
-          <label className="input-label" htmlFor="apiurl">
-            API URL:
-            <input
-              id="apiurl"
-              className="form-input"
-              type="text"
-              value={apiUrl}
-              onChange={this.handleChange}
-            />
-          </label>
-          <button type="button" onClick={this.handleSubmit}>
-            Submit
-          </button>
-          <div className="json-data">{apiResult ? <ReactJson src={apiResult} /> : null}</div>
-        </form>
+        <RequestForm value={apiUrl} onChange={this.handleChange} onSubmit={this.handleSubmit} />
+        <PrettyJson data={apiResult} />
       </div>
     );
   }
